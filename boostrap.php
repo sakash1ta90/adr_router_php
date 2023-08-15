@@ -17,7 +17,7 @@ try {
     $router = new Router();
     $topAction = new TopAction($TopDomain, $topResponder);
     $router->get('/', $topAction);
-    $router->get('/hoge', fn (string $val = '') => 'Hello, world: ' . $val);
+    $router->get('/hoge', fn(string $val = '') => 'Hello, world: ' . $val);
     $router->resolve();
 } catch (Throwable $e) {
     http_response_code(403);

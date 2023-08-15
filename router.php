@@ -32,7 +32,7 @@ class Router
         $path = $_SERVER['REQUEST_URI'] ?? '/';
         $paramsOrigStr = '';
         if (1 === preg_match('/\?/', $path)) {
-            [$path, $paramsOrigStr] = explode('?', $path);
+            [0 => $path, 1 => $paramsOrigStr] = explode('?', $path);
         }
         $method = $_SERVER['REQUEST_METHOD'];
 
@@ -46,15 +46,20 @@ class Router
             } else if (is_callable($return)) {
                 echo $return();
             }
+            // TODO: ELSE処理
         } else {
-            $paramsArray = [];
-            $paramsArrayTmp = explode('&', $paramsOrigStr);
-            foreach ($paramsArrayTmp as $paramsArrayTmpUnit) {
-                [0 => $key, 1 => $value] = explode('=', $paramsArrayTmpUnit);
-                $paramsArray[$key] = $value;
-            }
-            echo $this->routeing[$method][$path](...$paramsArray);
+            $paramsArray = $this->explodeGetParams($paramsOrigStr);
+            echo $this->routeing[$method][$path](...$paramsArray)();
         }
     }
 
+    private function explodeGetParams(string $orgParams): array
+    {
+        $paramsArrayTmp = explode('&', $orgParams);
+        foreach ($paramsArrayTmp as $paramsArrayTmpUnit) {
+            [0 => $key, 1 => $value] = explode('=', $paramsArrayTmpUnit);
+            $paramsArray[$key] = $value;
+        }
+        return $paramsArray ?? [];
+    }
 }
