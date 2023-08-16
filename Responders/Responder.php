@@ -1,5 +1,6 @@
 <?php
 
 interface Responder {
-    public function response($params): Response;
+    public function responseOk($params): Response;
+    public function responseValidationError(array $errors);
 }

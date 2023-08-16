@@ -25,10 +25,7 @@ class TopAction extends ActionBase
     {
         $errors = $this->validation();
         if (count($errors) > 0) {
-            // TODO: エラーレスポンス
-            return $this->responder->response(
-                $this->domain->get('error')
-            );
+            return $this->responder->responseValidationError($errors);
         }
         $responseMessage = '';
         foreach ($params as $key => $param) {
@@ -37,7 +34,7 @@ class TopAction extends ActionBase
                 $responseMessage .= ',';
             }
         }
-        return $this->responder->response(
+        return $this->responder->responseOk(
             $this->domain->get($responseMessage)
         );
     }
