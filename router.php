@@ -5,6 +5,22 @@ class Router
     private array $routeing = [];
 
     /**
+     * @param array $routes
+     */
+    public function __construct(array $routes)
+    {
+        foreach ($routes as $route) {
+            switch ($route['method']) {
+                case 'GET':
+                    $this->get($route['path'], $route['callback']);
+                    break;
+                case 'POST':
+                    $this->post($route['path'], $route['callback']);
+            }
+        }
+    }
+
+    /**
      * @param string $path
      * @param callable $callback
      * @return void
@@ -53,6 +69,10 @@ class Router
         }
     }
 
+    /**
+     * @param string $orgParams
+     * @return array
+     */
     private function explodeGetParams(string $orgParams): array
     {
         $paramsArrayTmp = explode('&', $orgParams);

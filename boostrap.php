@@ -14,10 +14,18 @@ try {
     require_once ROOT_DIR . '/Router.php';
     $TopDomain = new TopDomain();
     $topResponder = new TopResponder();
-    $router = new Router();
-    $topAction = new TopAction($TopDomain, $topResponder);
-    $router->get('/', $topAction);
-    $router->get('/hoge', fn(string $val = '') => 'Hello, world: ' . $val);
+    $router = new Router([
+        [
+            'method' => 'GET',
+            'path' => '/',
+            'callback' => new TopAction($TopDomain, $topResponder),
+        ],
+        [
+            'method' => 'GET',
+            'path' => '/hoge',
+            'callback' => fn(string $val = '') => 'Hello, world: ' . $val,
+        ],
+    ]);
     $router->resolve();
 } catch (Throwable $e) {
     http_response_code(403);

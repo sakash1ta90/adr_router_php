@@ -2,6 +2,7 @@
 
 class TopAction extends ActionBase
 {
+    // TODO: バリデーションルールを設定できるようにする
     protected array $validations = [
         'val',
     ];
