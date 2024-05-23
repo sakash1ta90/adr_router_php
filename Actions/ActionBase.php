@@ -10,10 +10,12 @@ abstract class ActionBase
     protected function validation(): array
     {
         $errors = [];
-        foreach ($this->validations as $validation) {
-            $param = filter_input(INPUT_GET, $validation);
-            if (false === $param || null === $param) {
-                $errors[] = $validation;
+        foreach ($this->validations as $key => $validationRule) {
+            $param = filter_input(INPUT_GET, $key);
+            if(!str_contains($validationRule,'nullable')) {
+                if (false === $param || null === $param) {
+                    $errors[] = $key;
+                }
             }
         }
         return $errors;
